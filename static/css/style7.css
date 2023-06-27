@@ -1,0 +1,83 @@
+html, body {
+    animation: gradient 15s ease infinite
+}
+
+h1 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px black;
+    animation: glow 2s ease-in-out infinite;
+    font-size: 100px;
+    font-style: italic;
+    margin-top: 70px;
+    margin-right: 100px;
+    text-align: center;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 2px 2px 3px black;
+    }
+    50% {
+        text-shadow: 0 0 15px white, 0 0 20px white, 0 0 30px white, 0 0 40px white;
+    }
+    100% {
+        text-shadow: 2px 2px 3px black;
+    }
+}
+.form-container {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 2px black;
+}
+.form-group input[type="submit"] {
+    background-color: #a41120;
+    color: white;
+    cursor: pointer;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    width: 100%;
+}
+.form-group input[type="submit"]:hover {
+    background-color: #b1149e;
+}
+.form-group .button select {
+    width: 40%;
+}
+.form-group .priority-select {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
+.form-group .button {
+    text-align: right;
+    width: 50%;
+    justify-content: space-between;
+    display: flex;
+}
+.form-group input[type="text"]::placeholder,
+  .form-group textarea::placeholder {
+    color: #999;
+    font-style: italic;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+p {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
