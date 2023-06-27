@@ -1,0 +1,114 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.has-bg-img {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://i.ibb.co/FKmbTb6/space.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.bg-img {
+    display: none;
+}
+h1 {
+    color: white;
+    font-style: italic;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 2px 2px 3px black;
+    margin-left: 50px;
+    margin-top: 30px;
+}
+h2 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-shadow: 2px 2px 2px black;
+    margin-left: 35px;
+}   
+.navbar {
+    background-color: black;
+    font-size: 18px;
+    text-shadow: 1px 1px 2px gray;
+    top: 0;
+    position: fixed;
+    left: 0;
+    right: 0
+}
+.navbar .navbar-brand {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    padding: 15px
+}
+.navbar.nav li {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding: 5px;
+    text-align: right;
+}
+.navbar .nav li a {
+    color: white;
+    text-decoration: none;
+}
+.navbar .nav li a:hover {
+    color: yellow
+}
+.input-group {
+    width: 300px;
+}
+.footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    padding-bottom: 6px;
+}
+.header-container {
+    margin-right: -50px;
+}
+.facebook {
+    padding: 5px;
+    color: white;
+    text-decoration: none;
+}
+.facebook:hover {
+    color: yellow;
+}
+.row {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-top: 20px;
+}
+.row > div > img {
+    border: 10px black;
+    border-radius: 30px;
+    width: 50%;
+    padding: 10px;
+
+}
+.content-container {
+    height: 100%;
+    overflow: auto;
+    margin-top: 3px;
+   ;
+}
+.btn-primary {
+    padding: 6px;
+    margin-bottom: 4px;
+    border-radius: 10px;
+
+}
+.form-label {
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+.form-control {
+    border-radius: 10px;
+    
+}
+.custom-search-input {
+    margin-left: 40px;
+}

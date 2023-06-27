@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/style3.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>About Me<h1>
+            <img src="https://scontent.fewr1-6.fna.fbcdn.net/v/t39.30808-6/342996803_203144649139775_245638609228978256_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=Wm135KvzoK0AX_60jxA&_nc_ht=scontent.fewr1-6.fna&oh=00_AfCXKYCrptn5XoyEwDo9oJdYYcJ6ei93ie9AS-yJZYrOjA&oe=649F36B2"
+            class="img-thumbnail">
+        </div> 
+        <div class="col">
+        <div class="paragraph">
+            <h3>How it Began</h3>
+            <hr class="hr hr-blurry" />
+            <p>My fitness journey began at a young age. I grew up playing soccer and was intially interested just
+                for the sheer enjoyment of playing a game with friends and getting a good workout. As i got older, 
+                this enjoyment turned to passion when I became interested in weightlifting in high school. Things eventually
+                turned more serious, and I dove head-first into educating myself about nutrition and different workout programs
+                to achieve the best results. My love of weightlifting remains to this day, but life's twists and turns
+                brought me to discover another fitness arena; calistenics
+            </p>
+            <h3>Life Happens</h3>
+            <hr class="hr hr-blurry" />
+            <p>In my twenties, I became addicted to drugs and lost all hope for future success and happiness.
+                Eventually, I ended up in prison where I was powerless to change my situation and therefore was forced, instead, to
+                change myself. I mention this for a reason: Life happens. I created this website, to share not only my
+                experience with fitness and wellness, but to motivate others to pursue self-improvement and to be an example
+                for anyone going through a struggle in his or her life. Change can and does happen, when hard work is put in! 
+            </p>
+            <h3>What this Site Offers</h3>
+            <hr class="hr hr-blurry" />
+            <p>Here at The Fit Physicist we offer:</p>
+            <ul>
+                <li>Free Workout Plans</li>
+                <li>Weight Lifting and Calisthenics Advice</li>
+                <li>Nutrition and recipes</li>
+                <li>Supplementation reccomendations</li>
+                <li>Motivational and inpriational material</li>
+            </ul>
+        </div> 
+    </div>
+</div>
+
+{% endblock %}
