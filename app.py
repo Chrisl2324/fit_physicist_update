@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import os
-from flask_login import UserMixin, LoginManager, login_user
+from flask_login import UserMixin, LoginManager, login_user, login_required, current_user
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify
@@ -65,7 +65,7 @@ with app.app_context():
     
 @app.route('/about')
 def about():
-    return render_template('about.html', title="About")
+    return render_template('about.html', title="The Fit Physicist-About")
     
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
@@ -150,7 +150,73 @@ def register():
         "articles": articles
     }
 
-    return render_template('practice.html', title='Home', **context)
+    return render_template('practice.html', title='The Fit Physicist', **context)
+
+@app.route('/article')
+def article():
+
+    article_previews = [
+        { 
+            'title': 'Calisthenics Primer',
+            'description': "A beginner's intro to calisthenics, with workout plans and other advice",
+            'image': 'https://www.dmarge.com/wp-content/uploads/2022/01/most-difficult-handstand-1200x800.jpg',
+            'url': '#',
+        },
+        {
+            'title': 'Basic Nutrition Advice',
+            'description': "This is a good starting point for those just starting to track their diets",
+            'image': 'http://worldonline.media.clients.ellingtoncms.com/img/croppedphotos/2017/02/27/healthy-diet_t640.jpg?a6ea3ebd4438a44b86d2e9c39ecf7613005fe067',
+            'url': '#',
+        },
+        {
+            'title': 'Cardio Workouts',
+            'description': 'Various workouts based on circuit-style, designed for maximum calorie burn',
+            'image': 'https://www.shape.com/thmb/qr6AnPByfid8VTqqv9nrKgJOUr0=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/best-cardio-exercises-promo-2000-498cbfb8f07541b78572bf810e7fb600.jpg',
+            'url': '#'
+        },
+        {
+            'title': 'Deadlift Basics',
+            'description': 'This article provides the basic setup and techniques of the deaflift movement',
+            'image': 'https://www.americanfootballinternational.com/wp-content/uploads/Barbend-2021-Deadlift-620x400.png',
+            'url': '#'
+        },
+        {
+            'title': 'Supplementation',
+            'description': 'My personal experience with supplements and discussion of my favorite brands',
+            'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbwctv2YulNCDZ5JTwRK9ry8yz-D1cY-GU1Q&usqp=CAU',
+            'url': '#',
+        },
+        {
+            'title': 'Recovery',
+            'description': 'Various techniques to enhance and facilitate recovery from strenous exercise',
+            'image': 'https://images.pexels.com/photos/3076509/pexels-photo-3076509.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'url': '#'
+        }
+    ]
+
+    return render_template('article.html', title="The Fit Physicist-Articles", articles=article_previews)
+
+@app.route('/contribute', methods=["GET", "POST"])
+def contribute():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        user_id = current_user.id
+        author = current_user.username
+
+        title_exists = Article.query.filter_by(title=title).first()
+        if title_exists:
+            flash("This article already exists. Please choose a new title.")
+            return redirect(url_for('contribute'))
+        
+        new_article = Article(title=title, content=content, user_id=user_id, author=author)
+        db.session.add(new_article)
+        db.session.commit()
+
+        flash("Thanks for sharing with us!")
+        return redirect(url_for('register'))
+    
+    return render_template('contribute.html', title="The Fit Physicist-Contribute")
 
 
 if __name__ == '__main__':
