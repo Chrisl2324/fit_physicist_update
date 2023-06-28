@@ -5,11 +5,17 @@ from flask_login import UserMixin, LoginManager, login_user, login_required, cur
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify
-
+from flask_mail import Mail, Message
 
 
 app = Flask(__name__, static_url_path='/static')
+app.config['MAIL_SERVER'] = 'smtp@gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'clombar1@email.essex.edu'
+app.config['MAIL_PASSWORD'] = '232425'
 
+mail = Mail(app)
 
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
@@ -31,8 +37,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(80), nullable=False, unique=True)
     password_hash = db.Column(db.Text, nullable=False)
     
-def __repr__(self):
-    return f"User <{self.username}>"
+    def __repr__(self):
+        return f"User <{self.username}>"
 
 class Article(db.Model):
     __tablename__ = "articles"
@@ -46,18 +52,19 @@ class Article(db.Model):
     
     def __repr__(self):
         return f"Article <{self.title}>"
-    
-class Message(db.Model):
-    __tablename__ = "messages"
-    id = db.Column(db.Integer, primary_key=True)
-    sender = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(80), nullable=False)
-    title = db.Column(db.String(80), nullable=False)
-    message = db.Column(db.String, nullable=False)
-    priority = db.Column(db.String(20))
+
+  
+#class Message(db.Model):
+    #__tablename__ = "messages"
+    #id = db.Column(db.Integer, primary_key=True)
+    #sender = db.Column(db.String(50), nullable=False)
+    #email = db.Column(db.String(80), nullable=False)
+    #title = db.Column(db.String(80), nullable=False)
+    #message = db.Column(db.String, nullable=False)
+    #priority = db.Column(db.String(20))
         
-    def __repr__(self):
-            return f"Message: <{self.title}>"
+    #def __repr__(self):
+            #return f"Message: <{self.title}>"
         
 with app.app_context():
     db.create_all()
@@ -76,14 +83,11 @@ def contact():
         message = request.form.get('message')
         priority = request.form.get('priority')
             
-        new_message = Message(sender=sender, email=email,
-        title=title, message=message, priority=priority)
-        
-        db.session.add(new_message)
-        db.session.commit()
-        
-        flash("Message sent. Thanks for reaching out!")
-        return redirect(url_for('index'))
+        msg = Message(title, sender=email, recipients=['clombar1@email.essex.edu'])
+        msg.body = f"Name: {sender}\nEmail: {email}\n\n{message}"
+        mail.send(msg)
+
+        return 'Email sent!'
     
     return render_template('contact.html')
 
@@ -197,6 +201,7 @@ def article():
     return render_template('article.html', title="The Fit Physicist-Articles", articles=article_previews)
 
 @app.route('/contribute', methods=["GET", "POST"])
+@login_required
 def contribute():
     if request.method == 'POST':
         title = request.form.get('title')
