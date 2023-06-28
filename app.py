@@ -251,7 +251,15 @@ def search():
     context = {
         "articles": articles
     }
-    return render_template('search_result.html', title="Search Results", query=query, **context)
+    return render_template('search_results.html', title="Search Results", query=query, **context)
+
+@app.route('/single_article/<int:article_id>')
+def single_article(article_id):
+    article = Article.query.get(article_id)
+    if article:
+        return render_template('single_article.html', article=article)
+    else:
+        return "Article not found"
 
 if __name__ == '__main__':
     app.run(debug=True)
