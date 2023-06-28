@@ -1,7 +1,7 @@
 from flask import Flask, flash, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 import os
-from flask_login import UserMixin, LoginManager, login_user, login_required, current_user
+from flask_login import UserMixin, LoginManager, login_user, login_required, current_user, logout_user
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify
@@ -142,7 +142,7 @@ def register():
 
             if user and check_password_hash(user.password_hash, password):
                 login_user(user)
-                flash('You are now logged in!')
+                flash(f"Hello {username}, Welcome to the Fit Physicist!")
                 return jsonify(message="Login successful")
 
             flash("Incorrect login information! Try again")
@@ -155,6 +155,13 @@ def register():
     }
 
     return render_template('practice.html', title='The Fit Physicist', **context)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out")
+    return redirect(url_for('register'))
 
 @app.route('/article')
 def article():
@@ -176,7 +183,7 @@ def article():
             'title': 'Cardio Workouts',
             'description': 'Various workouts based on circuit-style, designed for maximum calorie burn',
             'image': 'https://www.shape.com/thmb/qr6AnPByfid8VTqqv9nrKgJOUr0=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/best-cardio-exercises-promo-2000-498cbfb8f07541b78572bf810e7fb600.jpg',
-            'url': '#'
+            'url': url_for('cardio_article')
         },
         {
             'title': 'Deadlift Basics',
@@ -194,7 +201,7 @@ def article():
             'title': 'Recovery',
             'description': 'Various techniques to enhance and facilitate recovery from strenous exercise',
             'image': 'https://images.pexels.com/photos/3076509/pexels-photo-3076509.jpeg?auto=compress&cs=tinysrgb&w=600',
-            'url': '#'
+            'url': url_for('cardio_article')
         }
     ]
 
@@ -223,6 +230,28 @@ def contribute():
     
     return render_template('contribute.html', title="The Fit Physicist-Contribute")
 
+@app.route('/welcome')
+@login_required
+def welcome():
+    return render_template('welcome.html', title="Welcome to the Fit Physicist")
+
+@app.route('/cardio_workouts')
+def cardio_article():
+    return render_template('cardio_workouts.html', title="Cardio Workouts")
+
+@app.errorhandler(401)
+def unauthorized_error(error):
+    return render_template('error.html', error_code=401, error_message="You need to log in to see this page!"), 401
+
+@app.route('/search')
+def search():
+    query = request.args.get('query')
+    articles = Article.query.filter(Article.title.ilike(f'%{query}%')).all()
+
+    context = {
+        "articles": articles
+    }
+    return render_template('search_result.html', title="Search Results", query=query, **context)
 
 if __name__ == '__main__':
     app.run(debug=True)
