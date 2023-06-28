@@ -1,0 +1,50 @@
+html, body {
+    animation: gradient 15s ease infinite
+}
+
+h1 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px black;
+    animation: glow 2s ease-in-out infinite;
+    font-size: 70px;
+    font-style: italic;
+    margin-top: 70px;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 2px 2px 3px black;
+    }
+    50% {
+        text-shadow: 0 0 15px white, 0 0 20px white, 0 0 30px white, 0 0 40px white;
+    }
+    100% {
+        text-shadow: 2px 2px 3px black;
+    }
+}
+h3 {
+    color: white;
+    font-style: italic;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 50px;
+    text-shadow: 2px 2px 2px black;
+}
+
+p {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
+.hr {
+    color: white;
+}
+body {
+    position: relative;
+}
+h4 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
