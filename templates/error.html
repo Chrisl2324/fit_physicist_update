@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/error.css')}}">
+{% endblock head %}
+
+{% block content %}
+    {% if error_code %}
+    <h1>Error {{error_code}}</h1>
+    <p>{{error_message}}</p>
+{% endif %}
+
+
+{% endblock content %}
