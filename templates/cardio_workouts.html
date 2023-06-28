@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/style8.css')}}">
+{% endblock head %}
+
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1>Cardio Circuits</h1>
+      <p class="lead">Circuit-style workouts can lead to increased cardiovascular fitness in a short-period of time.</p>
+      <hr class="hr hr-blurry" />
+      <h3>My Experience</h3>
+      <p> During my incarceration, I was forced to adopt a differnent methodology for my workouts. The facility I was in
+        did not have any weightlifting gear, despite common misconceptions, and also provided limited time and space
+        for me to acheive any exercise. Because of this, I developed certain techniques that helped me to achieve
+        maximum results in a fraction of the time. These workouts are also beneficial in that they can be performed anywhere,
+        anytime due to the minimum of gear required. Most of them only use a pull-up bar. 
+      </p>
+      <hr class="hr hr-blurry" />
+      <h3>Getting Started</h3>
+      <p>There are a few common exercises that I frequently use and I will discuss them in detail here. Most of them
+        you have hopefully seen before.
+      </p>
+      <hr class="hr hr-blurry"/>
+      <div id="list-example" class="list-group">
+        <a class="list-group-item list-group-item-action dropdown-toggle" href="#list-item-1" data-toggle="collapse">Burpess</a>
+        <div class="collapse" id="list-item-1">
+          <p>Hello</p>
+        </div>
+        <a class="list-group-item list-group-item-action dropdown-toggle" href="#list-item-2" data-toggle="collapse">Air Squats</a>
+        <div class="collapse" id="list-item-2">
+          <p>...</p>
+        </div>
+        <a class="list-group-item list-group-item-action dropdown-toggle" href="#list-item-3" data-toggle="collapse">Jumping Jacks</a>
+        <div class="collapse" id="list-item-3">
+          <p>...</p>
+        </div>
+        <a class="list-group-item list-group-item-action dropdown-toggle" href="#list-item-4" data-toggle="collapse">Toe Touches</a>
+        <div class="collapse" id="list-item-4">
+          <p>...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+  <script src="{{url_for('static', filename='scrollbar.js')}}"></script>
+{% endblock content %}
