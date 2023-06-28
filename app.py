@@ -205,7 +205,7 @@ def article():
         }
     ]
 
-    return render_template('article.html', title="The Fit Physicist-Articles", articles=article_previews)
+    return render_template('article.html', title="Articles", articles=article_previews)
 
 @app.route('/contribute', methods=["GET", "POST"])
 @login_required
@@ -257,9 +257,30 @@ def search():
 def single_article(article_id):
     article = Article.query.get(article_id)
     if article:
-        return render_template('single_article.html', article=article)
+        return render_template('single_article.html', title="The Fit Physicist", article=article)
     else:
         return "Article not found"
+    
+@app.route('/edit/<int:id>', method=["GET", "POST"])
+@login_required
+def edit(id):
+    article_edit = Article.query.get_or_404(id)
+
+    if current_user.username == article_edit.author:
+        if request.method == 'POST':
+            article_edit.title = request.form.get('title')
+            article_edit.content = request.form.get('content')
+
+            db.session.commit()
+
+            flash("Your changes have been saved")
+            return redirect(url_for('article', id=article_edit.id))
+        
+        context = {
+            'article': article_edit
+        }
+
+        return render_template('edit.html', **context)
 
 if __name__ == '__main__':
     app.run(debug=True)
