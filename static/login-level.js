@@ -4,7 +4,7 @@ $(document).ready(function () {
   $("#login-button").click(function (event) {
     event.preventDefault();
 
-
+    var action = "login";
     var username = $("#login-username").val();
     var password = $("#login-password").val();
 
@@ -22,6 +22,7 @@ $(document).ready(function () {
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify({
+        action: action,
         username: username,
         password: password,
       }),
