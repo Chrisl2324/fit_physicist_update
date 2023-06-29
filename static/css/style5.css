@@ -1,0 +1,54 @@
+html, body {
+    animation: gradient 15s ease infinite
+}
+h1 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 3px black;
+    animation: glow 2s ease-in-out infinite;
+    font-size: 90px;
+    font-style: italic;
+    margin-top: 70px;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 2px 2px 3px black;
+    }
+    50% {
+        text-shadow: 0 0 15px white, 0 0 20px white, 0 0 30px white, 0 0 40px white;
+    }
+    100% {
+        text-shadow: 2px 2px 3px black;
+    }
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px black;
+    height: 100%;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card:last-child {
+    margin-bottom: 0;
+  }
+.card-img-top {
+    border-radius: 20px;
+}
+
+.card-title {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+}
+.btn-primary {
+    box-shadow: 1px 1px 2px black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.btn-primary:hover {
+    background-color: #0a4d94;
+    border-color: #09396c;
+  }
