@@ -163,9 +163,16 @@ def logout():
     flash("You have been logged out")
     return redirect(url_for('register'))
 
+@app.route('/all_articles')
+@login_required
+def all_articles():
+    articles = Article.query.all()
+
+    return render_template('all_articles.html', title="All Articles", articles=articles)
+
 @app.route('/article')
 def article():
-
+    
     article_previews = [
         { 
             'title': 'Calisthenics Primer',
@@ -261,26 +268,26 @@ def single_article(article_id):
     else:
         return "Article not found"
     
-@app.route('/edit/<int:id>', method=["GET", "POST"])
+@app.route('/edit/<int:id>', methods=["GET", "POST"])
 @login_required
 def edit(id):
     article_edit = Article.query.get_or_404(id)
 
     if current_user.username == article_edit.author:
         if request.method == 'POST':
-            article_edit.title = request.form.get('title')
-            article_edit.content = request.form.get('content')
+            new_title = request.form.get('title')
+            new_content = request.form.get('content')
+
+            if new_title and new_content:  # Ensure the new title is not empty
+                article_edit.title = new_title
+                article_edit.content = new_content
 
             db.session.commit()
 
             flash("Your changes have been saved")
             return redirect(url_for('article', id=article_edit.id))
-        
-        context = {
-            'article': article_edit
-        }
 
-        return render_template('edit.html', **context)
+        return render_template('edit.html', article=article_edit)
 
 if __name__ == '__main__':
     app.run(debug=True)
