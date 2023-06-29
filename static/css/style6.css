@@ -20,9 +20,7 @@ h3 {
         text-shadow: 2px 2px 3px black;
     }
 }
-.main {
-    background: none;
-}
+
 .form-group label {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: white;
