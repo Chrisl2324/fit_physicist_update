@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/search_style.css')}}">
+{% endblock head %}
+
+{% block content %}
+
+<h1>Search Results</h1>
+{% if articles %}
+<ul>
+    {% for article in articles %}
+    <li>
+        <a href="{{ url_for('single_article', article_id=article.id) }}" class="result-link">{{ article.title }}</a>
+        </li>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No articles found</p>
+{% endif %}
+{% endblock content %}
