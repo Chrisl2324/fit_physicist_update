@@ -98,7 +98,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 @app.route('/', methods=["GET", "POST"])
-def register():
+def index():
     if request.method == "POST":
         action = request.json.get('action')
         if action == 'register':
@@ -154,14 +154,14 @@ def register():
         "articles": articles
     }
 
-    return render_template('practice.html', title='The Fit Physicist', **context)
+    return render_template('index.html', title='The Fit Physicist', **context)
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash("You have been logged out")
-    return redirect(url_for('register'))
+    return redirect(url_for('index'))
 
 @app.route('/all_articles')
 @login_required
@@ -233,7 +233,7 @@ def contribute():
         db.session.commit()
 
         flash("Thanks for sharing with us!")
-        return redirect(url_for('register'))
+        return redirect(url_for('index'))
     
     return render_template('contribute.html', title="The Fit Physicist-Contribute")
 
@@ -290,7 +290,7 @@ def edit(id):
         return render_template('edit.html', article=article_edit)
     
     flash("You cannot edit another user's article!")
-    return render_template('practice.html', title='The Fit Physicist')
+    return render_template('index.html', title='The Fit Physicist')
 
 @app.route('/delete/<int:id>/', methods=['GET'])
 @login_required
@@ -301,10 +301,10 @@ def delete(id):
         db.session.delete(article_to_delete)
         db.session.commit()
         flash("Your article has been deleted")
-        return redirect(url_for('register'))
+        return redirect(url_for('index'))
     
     flash('You are not authorized to delete this article!')
-    return redirect(url_for('register'))
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
