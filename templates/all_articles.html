@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/all_articles.css')}}">
+{% endblock head %}
+
+
+{% block content %}
+{% for article in articles %}
+<h1>{{article.title}}</h1>
+<h3>By {{article.author}}</h3>
+<p class="article-control"><pre>{{article.content}}</pre></p>
+<h4>{{article.created_on.strftime('%d/%b/%Y')}}</h4>
+{% if current_user.id == article.user_id %}
+<a class="button" href="{{url_for('edit', id=article.id)}}">Update</a> 
+<br />
+{% endif %} {% endfor %}
+{% endblock content %}
