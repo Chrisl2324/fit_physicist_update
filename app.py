@@ -248,7 +248,7 @@ def cardio_article():
 
 @app.errorhandler(401)
 def unauthorized_error(error):
-    return render_template('error.html', error_code=401, error_message="You need to log in to see this page!"), 401
+    return render_template('error.html', error_code=401, error_message="Please Log in to View this Page"), 401
 
 @app.route('/search')
 def search():
@@ -285,9 +285,26 @@ def edit(id):
             db.session.commit()
 
             flash("Your changes have been saved")
-            return redirect(url_for('article', id=article_edit.id))
+            return redirect(url_for('all_articles'))
 
         return render_template('edit.html', article=article_edit)
+    
+    flash("You cannot edit another user's article!")
+    return render_template('practice.html', title='The Fit Physicist')
+
+@app.route('/delete/<int:id>/', methods=['GET'])
+@login_required
+def delete(id):
+    article_to_delete = Article.query.get_or_404(id)
+
+    if current_user.username == article_to_delete.author:
+        db.session.delete(article_to_delete)
+        db.session.commit()
+        flash("Your article has been deleted")
+        return redirect(url_for('register'))
+    
+    flash('You are not authorized to delete this article!')
+    return redirect(url_for('register'))
 
 if __name__ == '__main__':
     app.run(debug=True)
