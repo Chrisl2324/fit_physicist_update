@@ -11,11 +11,39 @@ h1 {
     font-style: italic;
     margin-top: 70px;
 }
+#subheader {
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+    position: relative;
+    opacity: .7;
+  }
+  
+  #subheader::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80%;
+    height: 2px;
+    background-color: #a6c0fe;
+  }
 img {
-    height: 50%;
-    width: 50%;
-    margin-top: -50px;
-    margin-left: 30px;
+    height: 35%;
+    width: 60%;
+    margin-left: 50px;
+    border-radius: 110px;
+    border-color: white;
+    border: 2px solid white;
+}
+#social {
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    padding: 10px;
+    margin-top: 10px;
+}
+.social {
+    margin-right: 10px;
 }
 
 @keyframes glow {
@@ -51,9 +79,11 @@ p {
     color: white;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-style: italic;
+    text-shadow: 1px 1px 1px black;
 }
 ul {
     color: white;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-style: italic;
+    text-shadow: 1px 1px 1px black;
 }
