@@ -13,6 +13,7 @@ $(document).ready(function () {
     event.preventDefault();
 
     // Get form values
+    var action = "register";
     var username = $("#username").val();
     var firstName = $("#first_name").val();
     var lastName = $("#last_name").val();
@@ -43,6 +44,7 @@ $(document).ready(function () {
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify({
+        action: action,
         username: username,
         first_name: firstName,
         last_name: lastName,

@@ -6,6 +6,12 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify
 from flask_mail import Mail, Message
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, EmailField
+from wtforms.validators import DataRequired, Email, InputRequired, email_validator
+from flask_migrate import Migrate
+from sqlalchemy import text
+
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -25,7 +31,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + \
 app.config["SQLACLHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = 'you-will-never-guess1315123'
 
+
 db = SQLAlchemy(app)
+
+
 
 
 class User(db.Model, UserMixin):
@@ -46,25 +55,39 @@ class Article(db.Model):
     title = db.Column(db.String(80), nullable=False)
     content = db.Column(db.String, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.now())
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        "users.id"), unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     author = db.Column(db.String, nullable=False)
-    
+
+    user = db.relationship("User", backref=db.backref("articles", lazy=True))
+    comments = db.relationship("Comment", back_populates="article")
+
     def __repr__(self):
         return f"Article <{self.title}>"
 
-  
-#class Message(db.Model):
-    #__tablename__ = "messages"
-    #id = db.Column(db.Integer, primary_key=True)
-    #sender = db.Column(db.String(50), nullable=False)
-    #email = db.Column(db.String(80), nullable=False)
-    #title = db.Column(db.String(80), nullable=False)
-    #message = db.Column(db.String, nullable=False)
-    #priority = db.Column(db.String(20))
-        
-    #def __repr__(self):
-            #return f"Message: <{self.title}>"
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(255), nullable=False)
+    created_on = db.Column(db.DateTime, default=datetime.now())
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey("articles.id"), nullable=False)
+
+    user = db.relationship("User", backref=db.backref("comments", lazy=True))
+    article = db.relationship("Article", back_populates="comments")
+
+    def __repr__(self):
+        return f"Comment <{self.text}>"
+
+    
+class CommentForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    content = StringField('Comment', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+
         
 with app.app_context():
     db.create_all()
@@ -96,6 +119,25 @@ login_manager = LoginManager(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.route('/submit_comment/<int:article_id>', methods=["POST"])
+@login_required
+def submit_comment(article_id):
+    article = Article.query.get_or_404(article_id)
+    comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        comment = Comment(
+            text=comment_form.content.data,
+            user=current_user,
+            article=article
+        )
+        db.session.add(comment)
+        db.session.commit()
+        flash("Comment submitted successfully!")
+        return redirect(url_for('article', article_id=article_id))
+
+    return render_template('comment_form.html', comment_form=comment_form)
 
 @app.route('/', methods=["GET", "POST"])
 def index():
@@ -147,7 +189,7 @@ def index():
 
             flash("Incorrect login information! Try again")
             return jsonify(message="Login failed")
-
+                
     # Handle GET request or other cases
     articles = Article.query.all()
     context = {
@@ -167,8 +209,9 @@ def logout():
 @login_required
 def all_articles():
     articles = Article.query.all()
+    comment_form = CommentForm()
 
-    return render_template('all_articles.html', title="All Articles", articles=articles)
+    return render_template('all_articles.html', title="All Articles", articles=articles, comment_form=comment_form)
 
 @app.route('/article')
 def article():
@@ -262,11 +305,10 @@ def search():
 
 @app.route('/single_article/<int:article_id>')
 def single_article(article_id):
-    article = Article.query.get(article_id)
-    if article:
-        return render_template('single_article.html', title="The Fit Physicist", article=article)
-    else:
-        return "Article not found"
+    article = Article.query.get_or_404(article_id)
+    comments = Comment.query.filter_by(article_id=article_id).all()
+    return render_template('single_article.html', title="The Fit Physicist", article=article, comments=comments)
+
     
 @app.route('/edit/<int:id>', methods=["GET", "POST"])
 @login_required
@@ -307,5 +349,5 @@ def delete(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
             
