@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/article_style.css')}}">
+{% endblock head %}
+
+{% block content %}
+<h1>{{ article.title }}</h1>
+<hr class="hr hr-blurry" />
+
+{% if article.image %}
+<img src="{{ url_for('static', filename='uploads/' + article.image) }}" alt="Article Image" class="article-image" />
+
+{% endif %}
+
+
+<p>{{ article.content }}</p>
+<hr class="hr hr-blurry" />
+
+<p>Author: {{ article.author }}</p>
+
+<p>Published on: {{ article.created_on }}</p>
+
+<h2>Comments</h2>
+<hr class="hr hr-blurry" />
+
+{% for comment in article.all_comments %}
+  <div class="comment">
+    <p><strong>{{ comment.user.username }}</strong> said on {{ comment.created_on }}:</p>
+    <p>{{ comment.text }}</p>
+  </div>
+{% endfor %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vesper+Libre&display=swap');
+</style>
+{% endblock content %}
