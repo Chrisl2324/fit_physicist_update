@@ -8,7 +8,7 @@ from flask import jsonify
 from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, EmailField
-from wtforms.validators import DataRequired, Email, InputRequired, email_validator
+from wtforms.validators import DataRequired, Email, InputRequired
 from flask_migrate import Migrate
 from sqlalchemy import text
 
