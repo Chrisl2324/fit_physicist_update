@@ -3,7 +3,7 @@ html, body {
 }
 h1 {
     color: white;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
     text-shadow: 2px 2px 3px black;
     animation: glow 2s ease-in-out infinite;
@@ -26,8 +26,38 @@ hr {
         text-shadow: 2px 2px 3px black;
     }
 }
+
+.article-image {
+    width: 400px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: solid;
+    border-color: white;
+    box-shadow: 1px 1px 1px black;
+}
+h2 {
+    color: white;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+    text-shadow: 1px 1px 1px black;
+}
 p {
     color: white;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-style: italic;
+    text-shadow: 1px 1px 1px black;
+}
+.article-control {
+    color: white;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-style: italic;
+    text-shadow: 1px 1px 1px black;
+
+}
+.btn {
+    color: white;
+    box-shadow: 1px 1px 2px black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: darkblue;
 }
