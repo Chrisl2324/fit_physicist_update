@@ -7,10 +7,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import jsonify
 from flask_mail import Mail, Message
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, EmailField
-from wtforms.validators import DataRequired, Email, InputRequired
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 from flask_migrate import Migrate
-from sqlalchemy import text
+from werkzeug.utils import secure_filename, send_from_directory
+import uuid
+
 
 
 
@@ -25,14 +27,22 @@ mail = Mail(app)
 
 
 base_dir = os.path.dirname(os.path.realpath(__file__))
+UPLOAD_FOLDER = os.path.join(app.root_path, 'static/uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///' + \
     os.path.join(base_dir, 'chris_blog.db')
 app.config["SQLACLHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = 'you-will-never-guess1315123'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 
@@ -57,6 +67,7 @@ class Article(db.Model):
     created_on = db.Column(db.DateTime, default=datetime.now())
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     author = db.Column(db.String, nullable=False)
+    image = db.Column(db.String)
 
     user = db.relationship("User", backref=db.backref("articles", lazy=True))
     comments = db.relationship("Comment", back_populates="article")
@@ -96,6 +107,14 @@ with app.app_context():
 @app.route('/about')
 def about():
     return render_template('about.html', title="The Fit Physicist-About")
+
+@app.route('/uploads/<filename>')
+def image_route(filename):
+    try:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    except FileNotFoundError:
+        # Handle the case when the image file is not found
+        return 'Image not found', 404
     
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
@@ -265,13 +284,17 @@ def contribute():
         content = request.form.get('content')
         user_id = current_user.id
         author = current_user.username
+        image = request.files['image'] 
 
         title_exists = Article.query.filter_by(title=title).first()
         if title_exists:
             flash("This article already exists. Please choose a new title.")
             return redirect(url_for('contribute'))
         
-        new_article = Article(title=title, content=content, user_id=user_id, author=author)
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        new_article = Article(title=title, content=content, user_id=user_id, author=author, image=filename)
         db.session.add(new_article)
         db.session.commit()
 
